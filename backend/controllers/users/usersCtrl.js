@@ -1,6 +1,8 @@
 const bcrypt=require('bcryptjs')
 const User = require("../../model/User")
 const { AppErr,appErr } = require('../../utils/appErr')
+const generateToken = require('../../utils/generateToken')
+const verifyToken = require('../../utils/verifyToken')
 
 
 //register
@@ -53,7 +55,9 @@ const userLoginCtrl=async(req,res)=>{
 
         }
 
-res.json({status:'success',fullname:userFound.fullname,id:userFound._id})
+res.json({status:'success',fullname:userFound.fullname,id:userFound._id,
+token:generateToken(userFound._id),
+})
  
     }catch(error){
          next(error)
@@ -62,8 +66,12 @@ res.json({status:'success',fullname:userFound.fullname,id:userFound._id})
 
 //profile
 const userProfileCtrl=async(req,res)=>{
+  
+ 
     try{
-res.json({msg:'profile route'})
+        const user=await User.findById(req.user)
+        res.json(user)
+ 
     }catch(error){
         res.json(error)
     }
