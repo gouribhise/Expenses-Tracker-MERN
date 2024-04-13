@@ -1,15 +1,16 @@
 const bcrypt=require('bcryptjs')
 const User = require("../../model/User")
+const { AppErr,appErr } = require('../../utils/appErr')
 
 
 //register
-const registerUserCtrl=async(req,res)=>{
+const registerUserCtrl=async(req,res,next)=>{
     const{fullname,email,password}=req.body
     try{
         //check if email exists
         const userFound=await User.findOne({email})
         if(userFound){
-            return res.json({message:'user exists'})
+           return next(new AppErr('User already exists',400))
         }
 
         if(!fullname||!password||!email){
@@ -29,8 +30,9 @@ const registerUserCtrl=async(req,res)=>{
         res.json({status:'success',fullname:user.fullname,
     id:user._id,
 email:user.email}) 
-    }catch(error){
-res.json(error)
+    }
+    catch(error){
+ next(new Error(error))
     }
 }
 
@@ -41,20 +43,20 @@ const userLoginCtrl=async(req,res)=>{
         //if email exists
         const userFound=await User.findOne({email})
         if(!userFound){
-            return res.json({message:'Invalid login credentials'})
+            return next(new AppErr('Invalid login credentials',400))
         }
 
         //is password valid
         const isPasswordMatch=await bcrypt.compare(password,userFound.password)
         if(!isPasswordMatch){
-            return res.json({message:'Invalid login credentials'})
+            return next(new AppErr('Invalid login credentials',400))
 
         }
 
 res.json({status:'success',fullname:userFound.fullname,id:userFound._id})
  
     }catch(error){
-        res.json(error)
+         next(error)
     }
 }
 
