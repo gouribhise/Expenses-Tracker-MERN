@@ -1,14 +1,27 @@
-const express=require('express')
-const { createAccountCtrl, getAccountCtrl, getAccountsCtrl, deleteAccountCtrl, updateAccountCtrl } = require('../../controllers/accounts/accountCtrl')
-const accountRoute=express.Router()
-const isLogin=require('../../middlewares/isLogin')
-accountRoute.post('/',isLogin,createAccountCtrl)
+const express = require("express");
+const {
+  createAccountCtrl,
+  deleteAccountCtrl,
+  getAccountCtrl,
+  updateAccountCtrl,
+  getAccountsCtrl,
+} = require("../../controllers/accounts/accountCtrl");
+const isLogin = require("../../middlewares/isLogin");
 
-accountRoute.get('/:id',getAccountCtrl)
+const accountRoute = express.Router();
 
-accountRoute.get('/',getAccountsCtrl)
+//POST/api/v1/accounts
+accountRoute.post("/", isLogin, createAccountCtrl);
 
-accountRoute.delete('/:id',deleteAccountCtrl)
+//GET/api/v1/accounts/:id
+accountRoute.get("/:id", getAccountCtrl);
 
-accountRoute.put('/:id',updateAccountCtrl)
-module.exports=accountRoute
+//DELETE/api/v1/accounts/:id
+accountRoute.delete("/:id", deleteAccountCtrl);
+
+//PUT/api/v1/accounts/:id
+accountRoute.put("/:id", updateAccountCtrl);
+
+//GET/api/v1/accounts
+accountRoute.get("/", getAccountsCtrl);
+module.exports = accountRoute;

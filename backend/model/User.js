@@ -1,36 +1,39 @@
-const mongoose=require('mongoose')
+const mongoose = require("mongoose");
 
-const userSchema=new mongoose.Schema({
-    fullname:{
-        type:String,
-        required:true,
+//user schema
+
+const userSchema = new mongoose.Schema(
+  {
+    fullname: {
+      type: String,
+      required: true,
     },
-    email:{
-        type:String,
-        required:true,
+    email: {
+      type: String,
+      required: true,
     },
-    password:{
-        type:String,
-        required:true,
+    password: {
+      type: String,
+      required: true,
     },
-    hasCreatedAccount:{
-        type:Boolean,
-        default:false
+    hasCreatedAccount: {
+      type: Boolean,
+      default: false,
     },
-    accounts:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Account'
-    }
-        
+    accounts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
+      },
     ],
-},{
-    timestamps:true,
-    toJSON:{virtuals:true}
-})
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+  }
+);
 
+//model
+const User = mongoose.model("User", userSchema);
 
-//compile schema to form model
-const User=mongoose.model('User',userSchema)
-
-module.exports=User
-
+module.exports = User;

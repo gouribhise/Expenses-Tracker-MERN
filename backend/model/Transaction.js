@@ -1,50 +1,66 @@
-const mongoose=require('mongoose')
+const mongoose = require("mongoose");
 
-const transactionSchema=new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
+//user schema
+const transactionSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
     },
-    transactionType:{
-        type:String,
-        enum:["income","expenses"],
-        required:true,
+    transactionType: {
+      type: String,
+      enum: ["Income", "Expenses"],
+      required: true,
     },
-    amount:{
-        type:Number,
-        required:true
-    },
-     
-    category:{
-        type:String,
-        enum:["food","transportation","entertainment","shopping","building"],
-        required:true,
-    },
-        
-   color:{
-    type:String,
-   },
-    createdBy:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
-    },
-    date:{
-        type:Date,
-        default:Date.now()
-    },
-    notes:{
-        type:String,
-        required:true
-    }
-},{
-    timestamps:true,
-    toJSON:{virtuals:true}
-})
 
+    amount: {
+      type: Number,
+      required: true,
+    },
 
-//compile schema to form model
-const Transaction=mongoose.model('Transaction',transactionSchema)
+    category: {
+      type: String,
+      enum: [
+        "Food",
+        "Transportation",
+        "Entertainment",
+        "Shopping",
+        "Utilities",
+        "Health",
+        "Travel",
+        "Education",
+        "Personal",
+        "Groceries",
+        "Bills",
+        "Uncategorized",
+        "Building",
+      ],
+      required: true,
+    },
+    color: {
+      type: String,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now(),
+    },
+    notes: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+  }
+);
 
-module.exports=Transaction
+//model
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
+module.exports = Transaction;

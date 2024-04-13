@@ -1,24 +1,28 @@
-const express=require('express')
-const { registerUserCtrl,   userLoginCtrl, userProfileCtrl, deleteUserCtrl, updateUserCtrl } = require('../../controllers/users/usersCtrl')
-const isLogin = require('../../middlewares/isLogin')
+const express = require("express");
 
-const usersRoute=express.Router()
+const {
+  registerUserCtrl,
+  userLoginCtrl,
+  userProfileCtrl,
+  deleteUserCtrl,
+  updateUserCtrl,
+} = require("../../controllers/users/usersCtrl");
+const isLogin = require("../../middlewares/isLogin");
 
-//post/api/v1/users/register
-usersRoute.post('/register',registerUserCtrl)
+const usersRoute = express.Router();
 
-//post/api/v1/users/login
-usersRoute.post('/login',userLoginCtrl)
+//POST/api/v1/users/register
 
-//get/api/v1/users/profile/:id
-usersRoute.get('/profile/',isLogin,userProfileCtrl)
+usersRoute.post("/register", registerUserCtrl);
+//POST/api/v1/users/login
+usersRoute.post("/login", userLoginCtrl);
 
+//GET/api/v1/users/profile
+usersRoute.get("/profile/", isLogin, userProfileCtrl);
 
-//delete/api/v1/users/:id
-usersRoute.delete('/:id',deleteUserCtrl)
+//DELETE/api/v1/users
+usersRoute.delete("/", isLogin, deleteUserCtrl);
 
-//update/api/v1/users/:id
-usersRoute.put('/:id',updateUserCtrl)
-
-
-module.exports=usersRoute
+//PUT/api/v1/users/
+usersRoute.put("/", isLogin, updateUserCtrl);
+module.exports = usersRoute;
