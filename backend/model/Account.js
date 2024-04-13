@@ -7,7 +7,7 @@ const accountSchema=new mongoose.Schema({
     },
     accountType:{
         type:String,
-        enum:["savings","investment","checking","credit card","Builing","School","project"],
+        enum:["savings","investment","checking","credit card","Builing","education","project"],
         required:true,
     },
     initialBalance:{

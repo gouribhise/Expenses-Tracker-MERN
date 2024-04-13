@@ -1,8 +1,8 @@
 const express=require('express')
 const { createAccountCtrl, getAccountCtrl, getAccountsCtrl, deleteAccountCtrl, updateAccountCtrl } = require('../../controllers/accounts/accountCtrl')
 const accountRoute=express.Router()
-
-accountRoute.post('/',createAccountCtrl)
+const isLogin=require('../../middlewares/isLogin')
+accountRoute.post('/',isLogin,createAccountCtrl)
 
 accountRoute.get('/:id',getAccountCtrl)
 

@@ -17,7 +17,7 @@ const transactionSchema=new mongoose.Schema({
      
     category:{
         type:String,
-        enum:["food","transportation","entertainment","shopping"],
+        enum:["food","transportation","entertainment","shopping","building"],
         required:true,
     },
         
@@ -26,7 +26,8 @@ const transactionSchema=new mongoose.Schema({
    },
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'User',
+        required:true
     },
     date:{
         type:Date,
