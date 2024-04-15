@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express=require('express')
+const cors=require("cors")
 require('./config/dbConnect')
 const usersRoute = require('./routes/users/usersRoute')
 const accountRoute = require('./routes/accounts/accountRoute')
@@ -11,6 +12,7 @@ const app=express()
 //middleware
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(cors())
 //error handlers
 app.use(globalHandler)
 

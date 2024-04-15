@@ -1,14 +1,13 @@
 import React, { createContext, useReducer } from "react";
 import axios from "axios";
-
-// import { apiURL } from "../../utils/apiURL";
 import {
   TRANSACTION_CREATION_STARTED,
   TRANSACTION_CREATION_SUCCES,
   TRANSACTION_CREATION_FAIL,
 } from "./transactionsActionTypes";
+import { API_URL_TRANSACTION } from "../../../utils/apiURL";
 
-export const TransactionContext = createContext();
+export const transactionContext = createContext();
 
 const INITIAL_STATE = {
   transaction: null,
@@ -20,11 +19,6 @@ const INITIAL_STATE = {
 const transactionReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case TRANSACTION_CREATION_STARTED:
-      return {
-        ...state,
-        loading: true,
-      };
     case TRANSACTION_CREATION_SUCCES:
       return {
         ...state,
@@ -48,7 +42,6 @@ export const TransactionContextProvider = ({ children }) => {
   //create account
   const createTransactionAction = async accountData => {
     try {
-      dispatch({ type: TRANSACTION_CREATION_STARTED });
       //header
       const config = {
         headers: {
@@ -57,26 +50,28 @@ export const TransactionContextProvider = ({ children }) => {
         },
       };
       //request
-      const res = await axios.post(
-        `http://localhost:3000/api/v1/transactions`,
-        accountData,
-        config
-      );
-
-      dispatch({ type: TRANSACTION_CREATION_SUCCES, payload: res?.data });
+      const res = await axios.post(API_URL_TRANSACTION, accountData, config);
+      console.log(res);
+      if (res?.data?.status === "success") {
+        dispatch({ type: TRANSACTION_CREATION_SUCCES, payload: res?.data });
+      }
     } catch (error) {
-      dispatch({ type: TRANSACTION_CREATION_FAIL, payload: error });
+      dispatch({
+        type: TRANSACTION_CREATION_FAIL,
+        payload: error?.response?.data?.message,
+      });
     }
   };
   return (
-    <TransactionContext.Provider
+    <transactionContext.Provider
       value={{
         transaction: state.transaction,
         transactions: state.transactions,
         createTransactionAction,
+        error: state?.error,
       }}
     >
       {children}
-    </TransactionContext.Provider>
+    </transactionContext.Provider>
   );
 };
